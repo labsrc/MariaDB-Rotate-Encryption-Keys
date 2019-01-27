@@ -1,13 +1,14 @@
 # MariaDB Stored Procedure to Rotate Encryption Keys
 
 ## Summary
-   This MariaDB SQL script will create a stored procedured named **rotateEncKeys** in the currently used DB.  This procedure can be added to any DB, however, the user running the procedure needs to have rights to alter all encrypted DB tables.  The purpose of this procedure is to rotate encryption keys created by the **File Key Management Plugin** for all currently encrypted tables.  When the procedure is run, a temporary table named "tmpEncKeyLog" will be created for logging purposes.  This table will be dropped upon the procdure's completion.
+This MariaDB SQL script will create a stored procedured named **rotateEncKeys** in the currently used DB.  This procedure can be added to any DB, however, the user running the procedure needs to have rights to alter all encrypted DB tables.  The purpose of this procedure is to rotate encryption keys created by the **File Key Management Plugin** for all currently encrypted tables.  When the procedure is run, a temporary table named "tmpEncKeyLog" will be created for logging purposes.  This table will be dropped upon the procdure's completion.
 
 ## Installation
+To setup this stored procedure, you will need to specify a database you would like to save this procedure in and execute **rotateEncKeysSP.sql** against it.  The stored procedure can be saved to any database.
 ```
 mysql -u username -p databasename < rotateEncKeysSP.sql
 ```
-   To setup this stored procedure, database you would like to save this stored procedure in.
+   
    
 ## Call Parameters
 ### Parameter 1: Encryption Key ID
