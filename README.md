@@ -1,12 +1,14 @@
-# MariaDB Stored Procedure to Rotate Encryption Keys
+# Rotate Encryption Keys in MariaDB via Stored Procedure
 
 ## Summary
 This MariaDB SQL script will create a stored procedured named **rotateEncKeys** in the specified DB.  This procedure can be added to any database, however, the user running the procedure needs to have rights to alter all encrypted DB tables.  The purpose of this procedure is to rotate encryption keys created by the **File Key Management Plugin** for all currently encrypted tables.  When the procedure is run, a temporary table named "tmpEncKeyLog" will be created for logging purposes.  This table will be dropped upon the procdure's completion.
+
 
 ## Prerequisites
 You need to have MariaDB's [Data at Rest Encryption](https://mariadb.com/kb/en/library/data-at-rest-encryption/) already setup using the default encryption plugin, [File Key Management Plugin](https://mariadb.com/kb/en/library/file-key-management-encryption-plugin/).  You also need to have created multiple encryption keys for use with this plugin.
 
 If you need help with the setup, you can follow the guide I wrote on my tech blog site, [LabSrc - Please Encrypt Your Databases](https://www.labsrc.com/please-encrypt-your-databases-mariadb/).
+
 
 ## Installation
 You will need to specify a **database** you would like to add the stored procedure to and then run the SQL script, **rotateEncKeysSP.sql**, to create it.  The stored procedure will run against all encrypted databases regardless of the database it resides in.
@@ -20,7 +22,9 @@ The stored procedure can be called by running the following command while using 
 ```
 call rotateEncKeys(KeyID,LogLocation);
 ```
-## SP Parameters
+
+
+## Stored Procedure Parameters
 ### Parameter 1: Encryption Key ID
    - All tables will rotate to specified Key ID
    - If specified key doesn't exist, all tables will rollover to Key ID "1"
@@ -31,7 +35,8 @@ call rotateEncKeys(KeyID,LogLocation);
    - Location must have write access to the user MariaDB runs as
    - MariaDB will not allow output to "Home Directories" by default
 
-## Example Usage
+
+## Stored Procedure Example Usage
 ### Example 1 - Incrementing All Encryption Keys
 ```
 call rotateEncKeys(0,'');
