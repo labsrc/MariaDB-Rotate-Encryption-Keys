@@ -7,19 +7,20 @@ The purpose of this project is to provide you with a method to rotate all encryp
 ## Prerequisites
 You need to have MariaDB's [Data at Rest Encryption](https://mariadb.com/kb/en/library/data-at-rest-encryption/) already setup using the default encryption plugin, [File Key Management Plugin](https://mariadb.com/kb/en/library/file-key-management-encryption-plugin/).  You also need to have created multiple encryption keys for use with this plugin.
 
-If you need help with the setup, you can follow the guide I wrote on my tech blog site, [Labsrc.com - Please Encrypt Your Databases](https://www.labsrc.com/please-encrypt-your-databases-mariadb/).
+If you need help with the setup, you can follow this guide on my tech blog, [Labsrc.com - Please Encrypt Your Databases](https://www.labsrc.com/please-encrypt-your-databases-mariadb/).
 
 
 ## Installation
-You will need to **_specify a database_** you would like to add the stored procedure to and then run the SQL script, **_rotateEncKeysSP.sql_**, to create it.  The stored procedure will run against all encrypted databases regardless of the database it resides in.
+You'll need to **_specify a database_** you would like to add the stored procedure to and then run the SQL script, **_rotateEncKeysSP.sql_**, to create it.  The stored procedure will run against all databases with encrypted tables regardless of the database it resides in.
 #### Install Command
 ```
 mysql -u username -p databasename < rotateEncKeysSP.sql
 ```
 
 ## Running the Stored Procedure
-The stored procedure can be called by running the following command while using the database it was stored in.
+The stored procedure can be called within the MariaDB console by running the following command while using the previously chosen database.
 ```
+use databasename; 
 call rotateEncKeys(KeyID,LogLocation);
 ```
 
