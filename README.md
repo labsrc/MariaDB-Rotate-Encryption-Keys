@@ -5,9 +5,9 @@ This MariaDB SQL script will create a stored procedured named **rotateEncKeys** 
 
 
 ## Prerequisites
-You need to have MariaDB's [Data at Rest Encryption](https://mariadb.com/kb/en/library/data-at-rest-encryption/) already setup using the default encryption plugin, [File Key Management Plugin](https://mariadb.com/kb/en/library/file-key-management-encryption-plugin/).  You also need to have created multiple encryption keys for use with this plugin.
+You need to have MariaDB's [Data at Rest Encryption](https://mariadb.com/kb/en/library/data-at-rest-encryption/){:target="_blank"} already setup using the default encryption plugin, [File Key Management Plugin](https://mariadb.com/kb/en/library/file-key-management-encryption-plugin/){:target="_blank"}.  You also need to have created multiple encryption keys for use with this plugin.
 
-If you need help with the setup, you can follow the guide I wrote on my tech blog site, [Labsrc.com - Please Encrypt Your Databases](https://www.labsrc.com/please-encrypt-your-databases-mariadb/).
+If you need help with the setup, you can follow the guide I wrote on my tech blog site, [Labsrc.com - Please Encrypt Your Databases](https://www.labsrc.com/please-encrypt-your-databases-mariadb/){:target="_blank"}.
 
 
 ## Installation
@@ -41,7 +41,7 @@ call rotateEncKeys(KeyID,LogLocation);
 ```
 call rotateEncKeys(0,'');
 ```
-This command will increment all encrypted table Key ID's by one and will output the log to your instance's default [datadir](https://mariadb.com/kb/en/library/server-system-variables/#datadir).  The default datadir for Ubuntu is **"/var/lib/mysql"**.  If the incremented Key ID doesn't exist, the table will rollover to Key ID 1.
+This command will increment all encrypted table Key ID's by one and will output the log to your instance's default [datadir](https://mariadb.com/kb/en/library/server-system-variables/#datadir){:target="_blank"}.  The default datadir for Ubuntu is **"/var/lib/mysql"**.  If the incremented Key ID doesn't exist, the table will rollover to Key ID 1.
 
 ### Example 2 - Changing All Tables to Encryption Key ID 2 and Specifying Log Location
 ```
