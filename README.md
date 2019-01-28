@@ -53,14 +53,18 @@ This command will change all encryption keys to Key ID 1 and will output the log
 ## Automating Stored Procedure
 To automate the stored procedure and rotate your encryption keys on a schedule, you'll need to first enable **_Event Scheduler_** in MariaDB.
 #### Enable Event Scheduler
-Edit your MariaDB config file normally found in /etc/mysql/mariadb.cnf and add the following under the [mysqld] section.
+Edit your MariaDB config file normally found in **_/etc/mysql/mariadb.cnf_**
+```
+sudo nano /etc/mysql/mariadb.cnf
+```
+Add the following under the [mysqld] section then save.
 ```
 [mysqld]
 event_scheduler = ON
 ```
-Restart MariaDB and event scheduler should be running.
+**_Restart MariaDB_** and event scheduler should now be running.
 
-You then need to create the event in the same database you created the stored procedure in.
+You then need to create a new event in the **_same database_** you created the **_stored procedure_** in.  Log into the **_MariaDB_** console and run the following:
 
 #### Create Event Schedule
 ```
@@ -68,7 +72,7 @@ You then need to create the event in the same database you created the stored pr
 use database; 
 CREATE EVENT rotateEncKeysEvent
    ## Following schedule runs once every Sunday at 1:00AM
-   ON SCHEDULE EVERY 1 WEEK STARTS '2019-02-02 01:00:00'
+   ON SCHEDULE EVERY 1 WEEK STARTS '2019-01-27 01:00:00'
    ON COMPLETION PRESERVE
    DO 
       call rotateEncKeys(0,'');
