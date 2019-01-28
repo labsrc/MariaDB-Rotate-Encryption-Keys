@@ -1,7 +1,7 @@
-# Rotate Encryption Keys in MariaDB via Stored Procedure
+# Rotate Encryption Keys in MariaDB
 
 ## Summary
-This MariaDB SQL script will create a stored procedured named **_rotateEncKeys_** in the specified DB.  This procedure can be added to any database, however, the user running the procedure needs to have rights to alter every DB's encrypted tables.  The purpose of this procedure is to rotate all encryption keys created by the [File Key Management Plugin](https://mariadb.com/kb/en/library/file-key-management-encryption-plugin/) for every currently encrypted table.  When the procedure is run, a temporary table named **_tmpEncKeyLog_** will be created for logging purposes.  This table will be dropped upon the procdure's completion.
+The purpose of this project is to provide you with a method to rotate all encryption keys created by the [File Key Management Plugin](https://mariadb.com/kb/en/library/file-key-management-encryption-plugin/) for every currently encrypted table.  The provided MariaDB SQL script, **_rotateEncKeysSP.sql_** will create a stored procedured named **_rotateEncKeys_** in a database of your choosing.  While it can be added to any database, the user running the procedure needs to have rights to alter every database's encrypted tables.  When the procedure is run, a temporary table named **_tmpEncKeyLog_** will be created to log the output to a CSV file.  This table will then be dropped upon the procdure's completion.  This method can also be **_automated via Event Scheduler_** to run on a schedule without user interaction.
 
 
 ## Prerequisites
