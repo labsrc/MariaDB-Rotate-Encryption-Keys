@@ -1,7 +1,7 @@
 # Rotate Encryption Keys in MariaDB via Stored Procedure
 
 ## Summary
-This MariaDB SQL script will create a stored procedured named **rotateEncKeys** in the specified DB.  This procedure can be added to any database, however, the user running the procedure needs to have rights to alter every DB's encrypted tables.  The purpose of this procedure is to rotate all encryption keys created by the **File Key Management Plugin** for every currently encrypted table.  When the procedure is run, a temporary table named **tmpEncKeyLog** will be created for logging purposes.  This table will be dropped upon the procdure's completion.
+This MariaDB SQL script will create a stored procedured named **__rotateEncKeys__** in the specified DB.  This procedure can be added to any database, however, the user running the procedure needs to have rights to alter every DB's encrypted tables.  The purpose of this procedure is to rotate all encryption keys created by the **__File Key Management Plugin__** for every currently encrypted table.  When the procedure is run, a temporary table named **__tmpEncKeyLog__** will be created for logging purposes.  This table will be dropped upon the procdure's completion.
 
 
 ## Prerequisites
@@ -11,7 +11,7 @@ If you need help with the setup, you can follow the guide I wrote on my tech blo
 
 
 ## Installation
-You will need to specify a **database** you would like to add the stored procedure to and then run the SQL script, **rotateEncKeysSP.sql**, to create it.  The stored procedure will run against all encrypted databases regardless of the database it resides in.
+You will need to **__specify a database__** you would like to add the stored procedure to and then run the SQL script, **__rotateEncKeysSP.sql__**, to create it.  The stored procedure will run against all encrypted databases regardless of the database it resides in.
 #### Install Command
 ```
 mysql -u username -p databasename < rotateEncKeysSP.sql
@@ -31,7 +31,7 @@ call rotateEncKeys(KeyID,LogLocation);
    - If Key ID "0" is used, all tables will increment their current Key ID by one. If incremented Key ID does not exist, tables will rollover to Key ID "1".
 #### Parameter 2: Log file location
    - Log file will be saved as encKeyLog_CurrentDate_CurrentTime.csv
-   - If '' is used, log file will be saved to MariaDB's datadir (Default for Ubuntu is "/var/lib/mysql/")
+   - If '' is used, log file will be saved to MariaDB's datadir **__(Default for Ubuntu is "/var/lib/mysql/")__**
    - Location must have write access to the user MariaDB runs as
    - MariaDB will not allow output to "Home Directories" by default
 
@@ -41,10 +41,10 @@ call rotateEncKeys(KeyID,LogLocation);
 ```
 call rotateEncKeys(0,'');
 ```
-This command will increment all encrypted table Key ID's by one and will output the log to your instance's default [datadir](https://mariadb.com/kb/en/library/server-system-variables/#datadir).  The default datadir for Ubuntu is **"/var/lib/mysql"**.  If the incremented Key ID doesn't exist, the table will rollover to Key ID 1.
+This command will increment all encrypted table Key ID's by one and will output the log to your instance's default [datadir](https://mariadb.com/kb/en/library/server-system-variables/#datadir).  The default datadir for Ubuntu is **__"/var/lib/mysql"__**.  If the incremented Key ID doesn't exist, the table will rollover to Key ID 1.
 
 #### Example 2 - Changing All Tables to Encryption Key ID 2 and Specifying Log Location
 ```
 call rotateEncKeys(2,'/tmp/');
 ```
-This command will rotate all encrypted tables to encryption key id 1 and will output the log to /tmp/
+This command will rotate all encrypted tables to encryption Key ID 1 and will output the log to /tmp/
