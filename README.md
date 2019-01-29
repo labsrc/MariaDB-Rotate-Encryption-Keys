@@ -30,10 +30,11 @@ call rotateEncKeys(KeyID,LogLocation);
    - All tables will rotate to specified Key ID
    - If specified key doesn't exist, all tables will rollover to Key ID "1"
    - If Key ID "0" is used, all tables will increment their current Key ID by one. If incremented Key ID does not exist, tables will rollover to Key ID "1".
-#### Parameter 2: Log file location
-   - Log file will be saved as encKeyLog_CurrentDate_CurrentTime.csv
-   - If '' is used, log file will be saved to MariaDB's datadir **_(Default for Ubuntu is "/var/lib/mysql/")_**
-   - Location must have write access to the user MariaDB runs as
+#### Parameter 2: Log file directory
+   - Log file will be saved as **_encKeyLog_CurrentDate_CurrentTime.csv_**
+   - Directory path must include trailing slash, **_ex: /tmp/_**
+   - If **_''_** is used, log file will be saved to MariaDB's **_datadir_** __(Default for Ubuntu is__ **_"/var/lib/mysql/")_**
+   - Directory must have write access to the user MariaDB runs as
    - MariaDB will not allow output to "Home Directories" by default
 
 
