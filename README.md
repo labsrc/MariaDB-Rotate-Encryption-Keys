@@ -59,7 +59,7 @@ Edit your MariaDB config file normally found in **_/etc/mysql/mariadb.cnf_**
 ```
 sudo nano /etc/mysql/mariadb.cnf
 ```
-Add the following under the [mysqld] section then save.
+Add the following under the **_[mysqld]_** section then save.
 ```
 [mysqld]
 event_scheduler = ON
