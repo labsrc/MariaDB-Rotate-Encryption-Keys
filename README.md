@@ -65,7 +65,7 @@ event_scheduler = ON
 ```
 **_Restart MariaDB_** and event scheduler should now be running.
 
-You then need to create a new event in the **_same database_** you created the **_stored procedure_** in.  Log into the **_MariaDB_** console and run the following:
+You then need to create a new event in the **_same database_** you created the **_stored procedure_** in.  Log into the **_MariaDB_** console and run the following.
 
 #### Create Event Schedule
 ```
@@ -78,3 +78,11 @@ CREATE EVENT rotateEncKeysEvent
    DO 
       call rotateEncKeys(0,'');
 ```
+#### Check Event Status
+You can check the status of your event by running the following.
+```
+SHOW EVENTS\G;
+```
+
+## Comments
+I created this script in my free time as I saw that currently MariaDB does not provide this feature with their encryption plugin.  I may improve or alter this script in the future.  If you find any issues or have ways to improve this project, please let me know.
