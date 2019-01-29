@@ -66,7 +66,7 @@ event_scheduler = ON
 ```
 **_Restart MariaDB_** and event scheduler should now be running.
 
-You then need to create a new event in the **_same database_** you created the **_stored procedure_** in.  Log into the **_MariaDB_** console and run the following.
+You then need to create a new event in the **_same database_** you created the **_stored procedure_** in.  Log into the **_MariaDB console_** and run the following.
 
 #### Create Event Schedule
 ```
