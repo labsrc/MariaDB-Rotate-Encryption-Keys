@@ -1,17 +1,18 @@
 # Rotate Encryption Keys in MariaDB
 
 ## Summary
-The purpose of this project is to provide you with a method to rotate all encryption keys created by the [File Key Management Plugin](https://mariadb.com/kb/en/library/file-key-management-encryption-plugin/) for every currently encrypted table.  The provided MariaDB SQL script, **_rotateEncKeysSP.sql_** will create a stored procedured named **_rotateEncKeys_** in a database of your choosing.  While it can be added to any database, the user running the procedure needs to have rights to alter every database's encrypted tables.  When the procedure is run, a temporary table named **_tmpEncKeyLog_** will be created to log the output to a CSV file.  This table will then be dropped upon the procdure's completion.  This method can also be **_automated via Event Scheduler_** to run on a schedule without user interaction.
+The purpose of this project is to provide a method to rotate all encryption keys created by MariaDB's [File Key Management Plugin](https://mariadb.com/kb/en/library/file-key-management-encryption-plugin/) for every encrypted table.  The provided MariaDB SQL script, **_rotateEncKeysSP.sql_** will create a stored procedured named **_rotateEncKeys_** in a database of your choosing.  While it can be added to any database, the user running the procedure needs to have rights to alter every database's encrypted tables.  When the procedure is run, a temporary table named **_tmpEncKeyLog_** will be created to allow logging of the output to a CSV file.  This table will then be dropped upon the procdure's completion.  This method can also be **_automated via Event Scheduler_** to run on a schedule without user interaction.
 
 
 ## Prerequisites
-You need to have MariaDB's [Data at Rest Encryption](https://mariadb.com/kb/en/library/data-at-rest-encryption/) already setup using the default encryption plugin, [File Key Management Plugin](https://mariadb.com/kb/en/library/file-key-management-encryption-plugin/).  You also need to have created multiple encryption keys for use with this plugin.
+You need to have MariaDB's [Data at Rest Encryption](https://mariadb.com/kb/en/library/data-at-rest-encryption/) already setup using the default encryption plugin, [File Key Management Plugin](https://mariadb.com/kb/en/library/file-key-management-encryption-plugin/).  You also need to have created multiple encryption keys for use with this plugin or the same key will be used over and over.
 
 If you need help with the setup, you can follow this guide on my tech blog, [Labsrc.com - Please Encrypt Your Databases](https://www.labsrc.com/please-encrypt-your-databases-mariadb/).
 
+This method has been tested against **_MariaDB 10.3_**, but should work as far back as version **_10.1.4_**.
 
 ## Installation
-You'll need to **_specify a database_** you would like to add the stored procedure to and then run the SQL script, **_rotateEncKeysSP.sql_**, to create it.  The stored procedure will run against all databases with encrypted tables regardless of the database it resides in.
+You'll need to **_specify a database_** you would like to add the stored procedure to and then run the SQL script, **_rotateEncKeysSP.sql_**, to create it.  The created stored procedure will run against all databases with encrypted tables regardless of the database it resides in.
 #### Install Command
 ```
 mysql -u username -p databasename < rotateEncKeysSP.sql
@@ -26,11 +27,11 @@ call rotateEncKeys(KeyID,LogLocation);
 
 
 ## Stored Procedure Parameters
-### Parameter 1: Encryption Key ID
+#### Parameter 1: Encryption Key ID
    - All tables will rotate to specified Key ID
    - If specified key doesn't exist, all tables will rollover to Key ID "1"
    - If Key ID "0" is used, all tables will increment their current Key ID by one. If incremented Key ID does not exist, tables will rollover to Key ID "1".
-### Parameter 2: Log file directory
+#### Parameter 2: Log file directory
    - Log file will be saved as **hostname_encKeyLog_CurrentDate_CurrentTime.csv_**
    - If **_''_** is used, log file will be saved to MariaDB's **_datadir_** __(Default for Ubuntu is__ **_"/var/lib/mysql/")_**
    - Directory must allow write access to the user MariaDB runs as
@@ -58,16 +59,15 @@ Edit your MariaDB config file normally found in **_/etc/mysql/mariadb.cnf_**
 ```
 sudo nano /etc/mysql/mariadb.cnf
 ```
-Add the following under the **_[mysqld]_** section then save.
+Add the following under the **_[mysqld]_**
 ```
 [mysqld]
 event_scheduler = ON
 ```
-**_Restart MariaDB_** and event scheduler should now be running.
-
-You then need to create a new event in the **_same database_** you created the **_stored procedure_** in.  Log into the **_MariaDB console_** and run the following.
+Save the config file, **_Restart MariaDB_** and event scheduler should now be running.
 
 #### Create Event Schedule
+Now create a new event in the **_same database_** you added the **_stored procedure_** to.  Log into the **_MariaDB console_** and run the following code.  You can change the time, start date and frequency to your liking.
 ```
 ## Use the same database the stored procedure was created in
 use database; 
@@ -84,5 +84,5 @@ You can check the status of your event by running the following.
 SHOW EVENTS\G;
 ```
 
-## Comments
-I created this script in my free time as I saw that currently MariaDB does not provide this feature with their encryption plugin.  I may improve or alter this script in the future.  If you find any issues or have ways to improve this project, please let me know.
+## CLOSING COMMENTS
+I created this script in my free time as MariaDB does not provide this feature with their encryption plugin.  I may improve or alter this script in the future see check back in when you have time.  If you find any issues or have ways to improve this project, please let me know.
