@@ -26,15 +26,14 @@ call rotateEncKeys(KeyID,LogLocation);
 
 
 ## Stored Procedure Parameters
-#### Parameter 1: Encryption Key ID
+### Parameter 1: Encryption Key ID
    - All tables will rotate to specified Key ID
    - If specified key doesn't exist, all tables will rollover to Key ID "1"
    - If Key ID "0" is used, all tables will increment their current Key ID by one. If incremented Key ID does not exist, tables will rollover to Key ID "1".
-#### Parameter 2: Log file directory
-   - Log file will be saved as **_encKeyLog_CurrentDate_CurrentTime.csv_**
-   - Directory path must include trailing slash, **_ex: /tmp/_**
+### Parameter 2: Log file directory
+   - Log file will be saved as **hostname_encKeyLog_CurrentDate_CurrentTime.csv_**
    - If **_''_** is used, log file will be saved to MariaDB's **_datadir_** __(Default for Ubuntu is__ **_"/var/lib/mysql/")_**
-   - Directory must have write access to the user MariaDB runs as
+   - Directory must allow write access to the user MariaDB runs as
    - MariaDB will not allow output to "Home Directories" by default
 
 
@@ -47,9 +46,9 @@ This command will increment all encryption Key ID's by one and will output the l
 
 #### Example 2 - Changing All Tables to Encryption Key ID 2 and Specifying Log Location
 ```
-call rotateEncKeys(2,'/tmp/');
+call rotateEncKeys(2,'/tmp');
 ```
-This command will change all encryption keys to Key ID 1 and will output the log to the /tmp/ directory.
+This command will change all encryption keys to Key ID 1 and will output the log to the /tmp directory.
 
 
 ## Automating Stored Procedure
