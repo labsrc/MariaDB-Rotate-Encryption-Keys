@@ -1,7 +1,7 @@
 # MariaDB - Rotate Encryption Keys
 
 ## Summary
-The purpose of this project is to provide a method to rotate all encryption keys used by MariaDB's [File Key Management Plugin](https://mariadb.com/kb/en/library/file-key-management-encryption-plugin/) for every encrypted table.  The provided MariaDB SQL script, **_rotateEncKeysSP.sql_** will create a stored procedured named **_rotateEncKeys_** in a database of your choosing.  While this procedure can be added to any database, the user running it needs to have rights to alter every database's encrypted tables.  A temporary table named **_tmpEncKeyLog_** will be created by the stored procedure to allow the logging of the key rotation to a CSV file.  This table will then be dropped upon the procdure's completion.  This method can also be **_automated via Event Scheduler_** to run on a schedule without user interaction.  See below
+The purpose of this project is to provide a method to rotate all encryption keys used by MariaDB's [File Key Management Plugin](https://mariadb.com/kb/en/library/file-key-management-encryption-plugin/) for every encrypted table.  The provided MariaDB SQL script, **_rotateEncKeysSP.sql_** will create a stored procedured named **_rotateEncKeys_** in a database of your choosing.  While this procedure can be added to any database, the user running it needs to have rights to alter every database's encrypted tables.  A temporary table named **_tmpEncKeyLog_** will be created by the stored procedure to allow the logging of the key rotation to a CSV file.  This table will then be dropped upon the procdure's completion.  This method can also be **_automated via Event Scheduler_** to run on a schedule without user interaction.  See the [Create Event Schedule](https://github.com/labsrc/MariaDB-Rotate-Encryption-Keys/blob/master/README.md#create-event-schedule) section for more info.
 
 This method has been tested against **_MariaDB 10.3_**, but should work as far back as version **_10.1.4_**.
 
@@ -66,7 +66,7 @@ event_scheduler = ON
 ```
 Save the config file, **_Restart MariaDB_** and event scheduler should now be running.
 
-####  [Create Event Schedule](#create-event-schedule)
+####  Create Event Schedule[](#create-event-schedule)
 Now create a new event in the **_same database_** you added the **_stored procedure_** to.  Log into the **_MariaDB console_** and run the following code.  You can change the time, start date and frequency to your liking.
 ```
 ## Use the same database the stored procedure was created in
