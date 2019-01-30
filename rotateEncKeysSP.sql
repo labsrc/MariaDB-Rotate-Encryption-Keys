@@ -63,16 +63,18 @@ END LOOP getTables;
 CLOSE curTableKeys;
 IF (rotateEncLogDir IS NULL or rotateEncLogDir = '') THEN
     SET rotateEncLogDir = @@datadir;
+ELSEIF (SUBSTRING(rotateEncLogDir, -1) != '/') THEN
+    SET rotateEncLogDir = CONCAT(rotateEncLogDir, '/');
 END IF;
-SET @rotateKeyLogPath = CONCAT(rotateEncLogDir, 'encKeyLog_', CURDATE(), '_', CURTIME() + 0, '.csv');
+SET @rotateKeyLogPath = CONCAT(rotateEncLogDir, @@hostname, '_encKeyLog_', CURDATE(), '_', CURTIME() + 0, '.csv');
 SET @encKeyOutput = CONCAT('SELECT \'TABLE_NAME\', \'NEW_KEY\', \'PREV_KEY\', \'ERROR\'
-UNION ALL
-SELECT * FROM (SELECT TABLE_NAME, NEW_KEY, PREV_KEY, ERROR
-FROM tmpEncKeyLog ORDER BY TABLE_NAME LIMIT 18446744073709551615)
-a INTO OUTFILE \'', @rotateKeyLogPath,
-'\' FIELDS TERMINATED BY \',\'
-ENCLOSED BY \'"\'
-LINES TERMINATED BY \'\\n\'');
+    UNION ALL
+    SELECT * FROM (SELECT TABLE_NAME, NEW_KEY, PREV_KEY, ERROR
+    FROM tmpEncKeyLog ORDER BY TABLE_NAME LIMIT 18446744073709551615)
+    a INTO OUTFILE \'', @rotateKeyLogPath,
+    '\' FIELDS TERMINATED BY \',\'
+    ENCLOSED BY \'"\'
+    LINES TERMINATED BY \'\\n\'');
 PREPARE rotateKeyLog FROM @encKeyOutput;
 EXECUTE rotateKeyLog;
 DEALLOCATE PREPARE rotateKeyLog;
@@ -80,3 +82,4 @@ DROP TEMPORARY TABLE tmpEncKeyLog;
 END;
 //
 DELIMITER ;
+													 
