@@ -22,7 +22,7 @@ mysql -u username -p databasename < rotateEncKeysSP.sql
 The stored procedure can be called within the MariaDB console by running the following command while using the previously chosen database.
 ```
 use databasename; 
-call rotateEncKeys(KeyID,LogLocation);
+call rotateEncKeys(KeyID,'LogLocation');
 ```
 
 
