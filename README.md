@@ -18,7 +18,7 @@ You'll need to **_specify a database_** you would like to add the stored procedu
 mysql -u username -p databasename < rotateEncKeysSP.sql
 ```
 
-## Running the Stored Procedure
+## Calling the Stored Procedure
 The stored procedure can be called within the MariaDB console by running the following command while using the previously chosen database.
 ```
 use databasename; 
