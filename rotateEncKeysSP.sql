@@ -8,7 +8,7 @@ DECLARE exit_loop BOOLEAN DEFAULT FALSE;
 DECLARE encKeyMaxed BOOLEAN DEFAULT FALSE;
 DECLARE otherErr BOOLEAN DEFAULT FALSE;
 DEClARE curTableKeys CURSOR FOR
-	SELECT NAME,CURRENT_KEY_ID FROM information_schema.innodb_tablespaces_encryption WHERE NAME <>'innodb_system';
+    SELECT NAME,CURRENT_KEY_ID FROM information_schema.innodb_tablespaces_encryption WHERE NAME <>'innodb_system';
 DECLARE CONTINUE HANDLER FOR NOT FOUND SET exit_loop = TRUE;
 DECLARE CONTINUE HANDLER FOR 1005,1478 SET encKeyMaxed = TRUE;
 DECLARE CONTINUE HANDLER FOR 1 SELECT 'ERROR 1 (HY000): Can\'t create/write to file (Errcode: 13 "Permission denied")' AS 'Log File Error';
@@ -22,20 +22,20 @@ DROP TEMPORARY TABLE IF EXISTS tmpEncKeyLog;
 CREATE TEMPORARY TABLE tmpEncKeyLog (TABLE_NAME VARCHAR(50000), NEW_KEY INT, PREV_KEY INT, ERROR VARCHAR(10000));
 OPEN curTableKeys;
 getTables: LOOP
-	FETCH curTableKeys INTO dbTableName, curKey;
-	IF exit_loop THEN
+    FETCH curTableKeys INTO dbTableName, curKey;
+    IF exit_loop THEN
         LEAVE getTables;
     END IF;
-	SET @newKey = curKey + 1;
-	IF encKeyID > 0 THEN
+    SET @newKey = curKey + 1;
+    IF encKeyID > 0 THEN
         SET @newKey = encKeyID;
-	END IF;
+    END IF;
     SET dbTableName = REPLACE(dbTableName, '/', '.');
-	SET @dbTableNameFinal = CONCAT('ALTER TABLE ', dbTableName, ' ENCRYPTION_KEY_ID = ', @newKey);
-	PREPARE rotateKey FROM @dbTableNameFinal; 
-	EXECUTE rotateKey; 
-	DEALLOCATE PREPARE rotateKey;
-	IF encKeyMaxed THEN
+    SET @dbTableNameFinal = CONCAT('ALTER TABLE ', dbTableName, ' ENCRYPTION_KEY_ID = ', @newKey);
+    PREPARE rotateKey FROM @dbTableNameFinal; 
+    EXECUTE rotateKey; 
+    DEALLOCATE PREPARE rotateKey;
+    IF encKeyMaxed THEN
         SET totalKeys = curKey;
         SET @newKey = 1;
         SET @dbTableNameFinal = CONCAT('ALTER TABLE ', dbTableName, ' ENCRYPTION_KEY_ID = ', @newKey);
@@ -82,4 +82,3 @@ DROP TEMPORARY TABLE tmpEncKeyLog;
 END;
 //
 DELIMITER ;
-													 
