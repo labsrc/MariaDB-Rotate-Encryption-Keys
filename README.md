@@ -72,7 +72,9 @@ Now create a new event in the **_same database_** you added the **_stored proced
 ## Example Event
 
 ## Use the same database the stored procedure was created in
-use database; 
+use database;
+
+## Create Event Schedule
 CREATE EVENT rotateEncKeysEvent
    ## Following schedule runs once a week on Sunday at 1:00AM
    ON SCHEDULE EVERY 1 WEEK STARTS '2019-01-27 01:00:00'
