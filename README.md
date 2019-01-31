@@ -38,7 +38,7 @@ call rotateEncKeys(KeyID,'LogLocation');
    - MariaDB will not allow output to "Home Directories" by default
 
 
-## Stored Procedure Example Usage
+## Example Stored Procedure Usage
 #### Example 1 - Incrementing All Encryption Keys
 ```
 call rotateEncKeys(0,'');
