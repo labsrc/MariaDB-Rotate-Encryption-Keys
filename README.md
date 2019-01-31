@@ -66,15 +66,15 @@ event_scheduler = ON
 ```
 Save the config file, **_Restart MariaDB_** and event scheduler should now be running.
 
-####  Create Event Schedule
+####  Create Scheduled Event
 Now create a new event in the **_same database_** you added the **_stored procedure_** to.  Log into the **_MariaDB console_** and run the following code.  You can change the time, start date and frequency to your liking.
 ```
-## Example Event
+## Example Scheduled Event
 
-## Use the same database the stored procedure was created in
+## Must use the same database the "rotateEncKeys" stored procedure was created in
 use database;
 
-## Create Event Schedule
+## Create Schedule Event
 CREATE EVENT rotateEncKeysEvent
    ## Following schedule runs once a week on Sunday at 1:00AM
    ON SCHEDULE EVERY 1 WEEK STARTS '2019-01-27 01:00:00'
