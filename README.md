@@ -88,5 +88,5 @@ You can check the status of your event by running the following.
 SHOW EVENTS\G;
 ```
 
-## CLOSING COMMENTS
+## Closing Comments
 I created this script in my free time as MariaDB does not currently provide this feature with their encryption plugin.  I may improve or alter this script in the future so check back in when you have time.  If you find any issues or have ways to improve this project in any way, feel free to post.
