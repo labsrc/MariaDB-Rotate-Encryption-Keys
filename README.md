@@ -84,7 +84,7 @@ CREATE EVENT rotateEncKeysEvent
    DO 
       call rotateEncKeys(0,'');
 ```
-Alternatively, you can use the provided example SQL script, [EXAMPLE-rotateEncKeysEvent.sql](https://github.com/labsrc/MariaDB-Rotate-Encryption-Keys/blob/master/EXAMPLE-rotateEncKeysEvent.sql) which will create the event for you.  Just remember to edit the schedule and call before executing it.
+Alternatively, you can use the provided SQL script, [EXAMPLE-rotateEncKeysEvent.sql](https://github.com/labsrc/MariaDB-Rotate-Encryption-Keys/blob/master/EXAMPLE-rotateEncKeysEvent.sql) which will create the event for you.  Just remember to edit the schedule and call before executing it.
 ```
 mysql -u username -p databasename < EXAMPLE-rotateEncKeysEvent.sql
 ```
