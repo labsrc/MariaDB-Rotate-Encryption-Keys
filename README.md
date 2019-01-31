@@ -1,7 +1,11 @@
 # MariaDB - Rotate Encryption Keys
 
 ## Summary
-The purpose of this project is to provide a method to rotate all encryption keys used by MariaDB's [File Key Management Plugin](https://mariadb.com/kb/en/library/file-key-management-encryption-plugin/) for every encrypted table.  The provided MariaDB SQL script, **_rotateEncKeysSP.sql_** will create a stored procedure named **_rotateEncKeys_** in a database of your choosing.  While this procedure can be added to any database, the user running it needs to have rights to alter every database's encrypted tables.  A temporary table named **_tmpEncKeyLog_** will be created by the stored procedure to allow the logging of the key rotation to a **_CSV file_**.  This table will then be dropped upon the procdure's completion.  This method can also be **_automated via Event Scheduler_** to run on a schedule without user interaction.  See the [Automating Stored Procedure](https://github.com/labsrc/MariaDB-Rotate-Encryption-Keys/blob/master/README.md#automating-stored-procedure) section below for more info.
+The purpose of this project is to provide a method to rotate all encryption keys used by MariaDB's [File Key Management Plugin](https://mariadb.com/kb/en/library/file-key-management-encryption-plugin/) for every encrypted table.  The provided MariaDB SQL script, **_rotateEncKeysSP.sql_** will create a stored procedure named **_rotateEncKeys_** in a database of your choosing.  While this procedure can be added to any database, the user running it needs to have rights to alter every database's encrypted tables.  
+
+A temporary table named **_tmpEncKeyLog_** will be created by the stored procedure to allow the logging of the key rotation to a **_CSV file_**.  This table will then be dropped upon the procdure's completion.
+
+The stored procedure can also be **_automated via Event Scheduler_** to run on a regular schedule without user interaction.  See the [Automating Stored Procedure](https://github.com/labsrc/MariaDB-Rotate-Encryption-Keys/blob/master/README.md#automating-stored-procedure) section below for more info.
 
 This method has been tested against **_MariaDB 10.3_**, but should work as far back as version **_10.1.4_**.
 
@@ -69,8 +73,6 @@ Save the config file, **_Restart MariaDB_** and event scheduler should now be ru
 ####  Create Scheduled Event
 Now create a new event in the **_same database_** you added the **_stored procedure_** to.  Log into the **_MariaDB console_** and run the following code.  You can change the time, start date and frequency to your liking.
 ```
-## Example Scheduled Event
-
 ## Must use the same database the "rotateEncKeys" stored procedure was created in
 use database;
 
@@ -82,6 +84,11 @@ CREATE EVENT rotateEncKeysEvent
    DO 
       call rotateEncKeys(0,'');
 ```
+An example SQL script, [EXAMPLE-rotateEncKeysEvent.sql](https://github.com/labsrc/MariaDB-Rotate-Encryption-Keys/blob/master/EXAMPLE-rotateEncKeysEvent.sql) has also been provided which will create the event for you.  Remember to edit the schedule and call before running.
+```
+mysql -u username -p databasename < EXAMPLE-rotateEncKeysEvent.sql
+```
+
 #### Check Event Status
 You can check the status of your event by running the following.
 ```
