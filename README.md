@@ -16,7 +16,7 @@ If you need help with the setup, you can follow this guide on my tech blog, [Lab
 
 
 ## Installation
-You'll need to **_specify a database_** you would like to add the stored procedure to and then run the SQL script, **_rotateEncKeysSP.sql_**, to create it.  The created stored procedure will run against all databases with encrypted tables regardless of the database it resides in.
+You'll need to **_specify a database_** you would like to add the stored procedure to and then run the SQL script, [rotateEncKeysSP.sql](https://github.com/labsrc/MariaDB-Rotate-Encryption-Keys/blob/master/rotateEncKeysSP.sql), to create it.  The created stored procedure will run against all databases with encrypted tables regardless of the database it resides in.
 #### Install Command
 ```
 mysql -u username -p databasename < rotateEncKeysSP.sql
