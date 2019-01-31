@@ -1,7 +1,7 @@
 # MariaDB - Rotate Encryption Keys
 
 ## Summary
-The purpose of this project is to provide a method to rotate all encryption keys used by MariaDB's [File Key Management Plugin](https://mariadb.com/kb/en/library/file-key-management-encryption-plugin/) for every encrypted table.  The provided MariaDB SQL script, **_rotateEncKeysSP.sql_** will create a stored procedure named **_rotateEncKeys_** in a database of your choosing.  While this procedure can be added to any database, the user running it needs to have rights to alter every database's encrypted tables.  A temporary table named **_tmpEncKeyLog_** will be created by the stored procedure to allow the logging of the key rotation to a CSV file.  This table will then be dropped upon the procdure's completion.  This method can also be **_automated via Event Scheduler_** to run on a schedule without user interaction.  See the [Automating Stored Procedure](https://github.com/labsrc/MariaDB-Rotate-Encryption-Keys/blob/master/README.md#automating-stored-procedure) section below for more info.
+The purpose of this project is to provide a method to rotate all encryption keys used by MariaDB's [File Key Management Plugin](https://mariadb.com/kb/en/library/file-key-management-encryption-plugin/) for every encrypted table.  The provided MariaDB SQL script, **_rotateEncKeysSP.sql_** will create a stored procedure named **_rotateEncKeys_** in a database of your choosing.  While this procedure can be added to any database, the user running it needs to have rights to alter every database's encrypted tables.  A temporary table named **_tmpEncKeyLog_** will be created by the stored procedure to allow the logging of the key rotation to a **_CSV file_**.  This table will then be dropped upon the procdure's completion.  This method can also be **_automated via Event Scheduler_** to run on a schedule without user interaction.  See the [Automating Stored Procedure](https://github.com/labsrc/MariaDB-Rotate-Encryption-Keys/blob/master/README.md#automating-stored-procedure) section below for more info.
 
 This method has been tested against **_MariaDB 10.3_**, but should work as far back as version **_10.1.4_**.
 
@@ -22,16 +22,16 @@ mysql -u username -p databasename < rotateEncKeysSP.sql
 The stored procedure can be called within the MariaDB console by running the following command while using the previously chosen database.
 ```
 use databasename; 
-call rotateEncKeys(KeyID,'LogLocation');
+call rotateEncKeys(KeyID,'Log Directory');
 ```
 
 
 ## Stored Procedure Parameters
 #### Parameter 1: Encryption Key ID
-   - All tables will rotate to the specified Key ID
+   - All tables will rotate to the specified encryption Key ID
    - If specified **_key doesn't exist_**, all tables will **_rollover to Key ID 1_**
    - If **_Key ID 0_** is used, all tables will **_increment_** their current Key ID **_by one_**. If incremented **_Key ID does not exist_**, tables will **_rollover to Key ID 1_**.
-#### Parameter 2: Log file directory
+#### Parameter 2: Log Directory
    - Log file will be saved as **hostname_encKeyLog_CurrentDate_CurrentTime.csv_**
    - If **_''_** is used, log file will be saved to MariaDB's **_datadir_** __(Default for Ubuntu is__ **_"/var/lib/mysql/")_**
    - Directory must allow write access to the user MariaDB runs as
@@ -45,11 +45,11 @@ call rotateEncKeys(0,'');
 ```
 This command will increment all encryption Key ID's by one and will output the log to your instance's default [datadir](https://mariadb.com/kb/en/library/server-system-variables/#datadir).  The default datadir for Ubuntu is **_"/var/lib/mysql"_**.  If the incremented Key ID doesn't exist, the table will rollover to Key ID 1.
 
-#### Example 2 - Changing All Tables to Encryption Key ID 2 and Specifying Log Location
+#### Example 2 - Changing All Tables to the Same Key ID and Specifying Log Directory
 ```
 call rotateEncKeys(2,'/tmp');
 ```
-This command will change all encryption keys to Key ID 1 and will output the log to the /tmp directory.
+This command will change all encryption keys to Key ID 2 and will output the log file to the /tmp directory.
 
 
 ## Automating Stored Procedure
